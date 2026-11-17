@@ -53,6 +53,13 @@ export class Scene extends IScene {
 	_backgroundPixelData;
 
 	/**
+	 * When true, the Scene is being simulated without rendering to reach a specific step of the history.
+	 * Click waits are skipped and their callbacks are invoked immediately.
+	 * @type {boolean}
+	 */
+	fastForward = false;
+
+	/**
 	 * Create a new scene where the fight will happen.
 	 * @param {string} background The key to the background reference picture.
 	 * @param {string} dojo The key to the dojo background reference picture if any.
@@ -350,6 +357,11 @@ export class Scene extends IScene {
 	 * @param {boolean} arrow If true, display an arrow at the bottom left of the screen. False by default.
 	 */
 	setClick(callback, unique = false, arrow = false) {
+		if (this.fastForward) {
+			this.removeClick();
+			callback();
+			return;
+		}
 		let clickCb = callback;
 		if (unique) {
 			/**
@@ -366,6 +378,15 @@ export class Scene extends IScene {
 		this.cursor = 'pointer';
 		if (arrow) {
 			this._continueArrow.visible = true;
+		}
+	}
+
+	/**
+	 * Invokes the current click callback, if any, as if the Scene had been clicked.
+	 */
+	triggerClick() {
+		if (this.onclick) {
+			/** @type {any} */ (this.onclick)(undefined);
 		}
 	}
 

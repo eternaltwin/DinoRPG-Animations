@@ -79,6 +79,24 @@ export class History {
 	_states = [];
 
 	/**
+	 * If defined, the History stops right before playing the step at this index and waits for resume() to be called.
+	 * @type {number | undefined}
+	 */
+	_haltAt;
+	/**
+	 * True when the History is halted before the step defined by _haltAt.
+	 * @type {boolean}
+	 */
+	_halted = false;
+	/**
+	 * Is the History halted, waiting for resume() to play its next step?
+	 * @type {boolean}
+	 */
+	get halted() {
+		return this._halted;
+	}
+
+	/**
 	 * Creates a new fight history using the history passed as parameter.
 	 * Initialize the actions' mappin.
 	 * @param {Fight} fight The Fight which created the History.
@@ -133,6 +151,11 @@ export class History {
 	 * @returns {void}
 	 */
 	playNext() {
+		// Halt before the requested step (used when seeking a step).
+		if (this._haltAt !== undefined && this._historyIdx + 1 >= this._haltAt) {
+			this._halted = true;
+			return;
+		}
 		// Fight end callback
 		if (this._history && this._historyIdx < this._history.length && this._historyIdx + 1 >= this._history.length) {
 			this._scene.settings.onFightEnd();
@@ -166,7 +189,7 @@ export class History {
 			this._historyIdx,
 			EnumConverter.convertAction(this._history[this._historyIdx], true)
 		);
-		if (!ignore && this._scene.settings.autoPause) {
+		if (!ignore && !this._scene.fastForward && this._scene.settings.autoPause) {
 			this._scene.setClick(
 				() => {
 					this.playNext();
@@ -177,6 +200,59 @@ export class History {
 		} else {
 			this.playNext();
 		}
+	}
+
+	/**
+	 * Index of the history step currently being played. -1 if the history has not started yet.
+	 * @type {number}
+	 */
+	get currentStep() {
+		return this._historyIdx;
+	}
+
+	/**
+	 * Total number of steps in the history.
+	 * @type {number}
+	 */
+	get length() {
+		return this._history.length;
+	}
+
+	/**
+	 * Halts the History right before playing the step at the given index.
+	 * @param {number} idx The index of the step before which the History halts.
+	 */
+	haltAt(idx) {
+		const wasHalted = this._halted;
+		this._haltAt = idx;
+		this._halted = false;
+		// The step which was waiting has to be played if the new halt index allows it.
+		if (wasHalted) {
+			this.playNext();
+		}
+	}
+
+	/**
+	 * Removes the halt and plays the next step if the History was halted.
+	 */
+	resume() {
+		this._haltAt = undefined;
+		if (this._halted) {
+			this._halted = false;
+			this.playNext();
+		}
+	}
+
+	/**
+	 * Kills all the running States without invoking their end callbacks.
+	 * The History cannot be used anymore after this call.
+	 */
+	destroy() {
+		for (const st of this._states) {
+			st.kill();
+		}
+		this._states = [];
+		this._historyIdx = this._history.length;
 	}
 
 	/**

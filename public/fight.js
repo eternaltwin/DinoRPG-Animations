@@ -866,7 +866,45 @@ const buttons = [
 	}
 ];
 
+const slider = document.getElementById('step-slider');
+const stepLabel = document.getElementById('step-label');
+
+/**
+ * Updates the navigation bar with the current step of the fight.
+ * @param {number} step The step to display.
+ */
+function updateNavigation(step) {
+	slider.max = Math.max(0, fightRef.stepCount - 1);
+	slider.value = Math.max(0, step);
+	stepLabel.textContent = `${Math.max(0, step) + 1} / ${fightRef.stepCount}`;
+}
+
+/**
+ * Hooks the navigation bar to the given fight.
+ * @param {object} fight The fight to navigate.
+ */
+function bindNavigation(fight) {
+	fight.onStepStart = (idx) => {
+		if (fight === fightRef) updateNavigation(idx);
+	};
+	updateNavigation(fight.currentStep);
+}
+
+/**
+ * Moves the current fight to the given step.
+ * @param {number} step The step to go to.
+ */
+function seek(step) {
+	fightRef.seek(step);
+	updateNavigation(fightRef.currentStep);
+}
+
+slider.addEventListener('input', () => seek(Number(slider.value)));
+document.getElementById('step-prev').addEventListener('click', () => seek(fightRef.currentStep - 1));
+document.getElementById('step-next').addEventListener('click', () => seek(fightRef.currentStep + 1));
+
 let fightRef = new DinoAnim.Fight(buttons[0].fight);
+bindNavigation(fightRef);
 for (const a of buttons) {
 	const button = document.createElement('button');
 	button.innerHTML = a.name;
@@ -875,6 +913,7 @@ for (const a of buttons) {
 			fightRef.destroy();
 		}
 		fightRef = new DinoAnim.Fight({ ...a.fight });
+		bindNavigation(fightRef);
 		const elem = document.getElementById('fight-container');
 		elem.innerHTML = '';
 		elem.appendChild(fightRef.getDisplay());

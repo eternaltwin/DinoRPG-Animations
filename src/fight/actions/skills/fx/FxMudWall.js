@@ -4,11 +4,18 @@
 import { Fighter } from '../../../Fighter.js';
 import { Scene } from '../../../Scene.js';
 import { State } from '../../../State.js';
+import { Timer } from '../../../Timer.js';
 
 /**
  * The given Fighter creates a mud wall in front of it.
  */
 export class FxMudWall extends State {
+	/**
+	 * Remaining time in milliseconds before the State ends.
+	 * @type {number}
+	 */
+	_remainingTime = 1000;
+
 	/**
 	 * The given fighter creates or removes a mudwall.
 	 * @param {Scene} scene The Scene where the effect takes place.
@@ -23,6 +30,19 @@ export class FxMudWall extends State {
 		} else {
 			fighter.fxAddMudWall();
 		}
-		setTimeout(() => this.end(), 1000);
+	}
+
+	/**
+	 * Ends the State once the remaining time has elapsed.
+	 * Uses the Fight's timer instead of a timeout so the State follows the speed of the Fight.
+	 * @param {Timer} timer The Fight's timer, containing the elapsed time.
+	 */
+	update(timer) {
+		super.update(timer);
+		if (this.toDelete) return;
+		this._remainingTime -= timer.deltaTimeMS;
+		if (this._remainingTime <= 0) {
+			this.end();
+		}
 	}
 }

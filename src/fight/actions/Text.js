@@ -73,7 +73,7 @@ export class Text extends State {
 				this._textBox.update(timer);
 				if (this._textBox.isDisplayed) {
 					this._step = 1;
-					if (this._scene.settings.autoSkip < 0) {
+					if (this._scene.settings.autoSkip < 0 || this._scene.fastForward) {
 						this._scene.setClick(
 							() => {
 								this.endTalk();

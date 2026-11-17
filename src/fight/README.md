@@ -55,6 +55,34 @@ document.body.appendChild(fight.getDisplay());
 | Water (2)  | Creates ripples around the fighters. When they are walking, creates droplets for water which burst up and then fall down. |
 | Rock (3)   | Creates stone particles of the same color as the background when a fighter lands.                                         |
 
+## Navigation
+
+The fight can be moved to any step of its history, for example to build a progress bar.
+
+| Member      | Type            | Description                                                                 |
+| ----------- | --------------- | --------------------------------------------------------------------------- |
+| stepCount   | Number          | Total number of steps in the history.                                       |
+| currentStep | Number          | Index of the step currently being played. -1 before the fight starts.       |
+| seeking     | Boolean         | True while the fight is simulating its history to reach the requested step. |
+| seek(step)  | Promise\<void\> | Moves the fight to the given step. Resolves once the step is reached.       |
+
+```javascript
+const slider = document.createElement('input');
+slider.type = 'range';
+slider.max = fight.stepCount - 1;
+slider.addEventListener('input', () => fight.seek(Number(slider.value)));
+fight.onStepStart = (idx) => (slider.value = idx);
+```
+
+The fight is simulated without rendering until the requested step is about to be played, then resumes normally from this step.
+Seeking backward replays the whole history from the start. Texts, speeches and auto pauses are skipped during the simulation.
+Calling `seek` while a seek is running simply changes its target.
+
+While seeking, `onStepStart`, `onStepEnd` (and their `Str` variants) and `onFightEnd` are not invoked for the skipped steps.
+`onLifeChange`, `onStatusChange` and `onDeath` are still invoked so an external display stays in sync.
+
+The result is not pixel-perfect compared to a normal playback (random positions and particles), but the state of the fight (life, status, deaths, castle, time bar) is the same.
+
 ## Callbacks
 
 The Fight object has multiple endpoints which can be used to gather information about the ongoing fight.

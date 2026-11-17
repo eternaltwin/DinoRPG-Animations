@@ -16,6 +16,24 @@
 				margin-right: 3px;
 			}
 
+			#navigation {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				width: 488px;
+				margin: 0 5px 8px;
+			}
+
+			#navigation input {
+				flex: 1;
+			}
+
+			#step-label {
+				min-width: 70px;
+				text-align: right;
+				font-variant-numeric: tabular-nums;
+			}
+
 			#doc-ref {
 				margin-top: 10px;
 			}
@@ -23,6 +41,12 @@
 	</head>
 	<body>
 		<div id="fight-container"></div>
+		<div id="navigation">
+			<button id="step-prev" title="Previous step">&#9664;</button>
+			<input id="step-slider" type="range" min="0" max="0" value="0" />
+			<button id="step-next" title="Next step">&#9654;</button>
+			<span id="step-label"></span>
+		</div>
 		<div id="controls"></div>
 		<div id="doc-ref">
 			<a href="https://github.com/Gerardufoin/DinoRPG-Animations/tree/main/src/fight">Documentation</a>

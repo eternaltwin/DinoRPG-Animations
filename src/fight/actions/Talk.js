@@ -94,7 +94,7 @@ export class Talk extends State {
 				this._bubble.update(timer);
 				if (this._bubble.isDisplayed) {
 					this._step = 1;
-					if (this._scene.settings.autoSkip < 0) {
+					if (this._scene.settings.autoSkip < 0 || this._scene.fastForward) {
 						this._scene.setClick(
 							() => {
 								this.endTalk();
