@@ -148,6 +148,28 @@ export class Fight {
 
 	getMTFormat(forceDAData?: boolean): string;
 
+	/**
+	 * Total number of steps in the fight history.
+	 */
+	get stepCount(): number;
+
+	/**
+	 * Index of the step currently being played. -1 before the fight starts.
+	 */
+	get currentStep(): number;
+
+	/**
+	 * Is the fight currently simulating its history to reach a step requested via seek()?
+	 */
+	get seeking(): boolean;
+
+	/**
+	 * Moves the fight to the given step of its history. Seeking backward replays the history from the start.
+	 * @param step The index of the step to go to, between 0 and stepCount - 1.
+	 * @returns Resolves once the step is reached.
+	 */
+	seek(step: number): Promise<void>;
+
 	destroy(): void;
 }
 

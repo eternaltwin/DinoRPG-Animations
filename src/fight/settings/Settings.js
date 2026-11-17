@@ -19,6 +19,13 @@ export class Settings {
 	 */
 	paused = false;
 	/**
+	 * If set to true, the step callbacks (onStepStart, onStepEnd and their Str variants) and onFightEnd are not invoked.
+	 * The callbacks reflecting the state of the fighters (life, status, death) are still invoked.
+	 * Used while seeking a specific step of the fight.
+	 * @type {boolean}
+	 */
+	muted = false;
+	/**
 	 * The language to use for the settings display.
 	 * @type {string}
 	 */
@@ -291,7 +298,7 @@ export class Settings {
 	 * @type {((index: number, step: object) => void)}
 	 */
 	get onStepStart() {
-		return this.asFunc(this._onStepStart);
+		return this.muted ? () => {} : this.asFunc(this._onStepStart);
 	}
 
 	_onStepEnd;
@@ -309,7 +316,7 @@ export class Settings {
 	 * @type {((index: number, step: object) => void)}
 	 */
 	get onStepEnd() {
-		return this.asFunc(this._onStepEnd);
+		return this.muted ? () => {} : this.asFunc(this._onStepEnd);
 	}
 
 	_onStepStartStr;
@@ -327,7 +334,7 @@ export class Settings {
 	 * @type {((index: number, step: object) => void)}
 	 */
 	get onStepStartStr() {
-		return this.asFunc(this._onStepStartStr);
+		return this.muted ? () => {} : this.asFunc(this._onStepStartStr);
 	}
 
 	_onStepEndStr;
@@ -345,7 +352,7 @@ export class Settings {
 	 * @type {((index: number, step: object) => void)}
 	 */
 	get onStepEndStr() {
-		return this.asFunc(this._onStepEndStr);
+		return this.muted ? () => {} : this.asFunc(this._onStepEndStr);
 	}
 
 	_onFightStart;
@@ -377,7 +384,7 @@ export class Settings {
 	 * @type {(() => void)}
 	 */
 	get onFightEnd() {
-		return this.asFunc(this._onFightEnd);
+		return this.muted ? () => {} : this.asFunc(this._onFightEnd);
 	}
 
 	_onFighterClick;
