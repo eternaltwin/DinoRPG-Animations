@@ -182,6 +182,11 @@ export class Fighter extends Phys {
 	 */
 	_maxEnergy = 100;
 	/**
+	 * Custom stats displayed in the tooltip (initiative, speed, etc), set by the Stats action.
+	 * @type {{[label: string]: string | number}}
+	 */
+	_stats = {};
+	/**
 	 * Size of the Fighter.
 	 * Bigger size will increase the display of the Fighter and the force applied to others.
 	 * Cannot be changed at runtime.
@@ -630,6 +635,7 @@ export class Fighter extends Phys {
 		}
 
 		this.createHitbox();
+		this.setupTooltip();
 
 		// On fighter click callback
 		if (this._scene.settings._onFighterClick) {
@@ -1896,6 +1902,61 @@ export class Fighter extends Phys {
 	 */
 	removeForce() {
 		this._force = null;
+	}
+
+	/**
+	 * Get the current state of the Fighter, as displayed in its tooltip.
+	 * @returns {{fid: number, name: string, side: boolean, alive: boolean, life: number, maxLife: number, energy: number, maxEnergy: number, status: number[], stats: {[label: string]: string | number}}} The state of the Fighter.
+	 */
+	getState() {
+		return {
+			fid: this.id,
+			name: this._name,
+			side: this._side,
+			alive: this.alive,
+			life: this._life,
+			maxLife: this._maxLife,
+			energy: this._energy,
+			maxEnergy: this._maxEnergy,
+			status: [...this._status],
+			stats: { ...this._stats }
+		};
+	}
+
+	/**
+	 * Merges the given values into the custom stats of the Fighter. A null value removes the stat.
+	 * @param {{[label: string]: string | number | null}} stats The stats to set.
+	 */
+	setStats(stats) {
+		for (const label in stats) {
+			if (stats[label] === null || stats[label] === undefined) {
+				delete this._stats[label];
+			} else {
+				this._stats[label] = stats[label];
+			}
+		}
+	}
+
+	/**
+	 * Shows the tooltip of the Fighter while the pointer is over the Fighter or its slot.
+	 */
+	setupTooltip() {
+		const tooltip = this._scene.fighterTooltip;
+		if (!tooltip) return;
+		// Hover zone covering the collider of the Fighter, so the gaps between its parts do not hide the tooltip.
+		const hoverZone = new Container();
+		hoverZone.hitArea = new Rectangle(-this._width / 2, -this._height, this._width, this._height);
+		this.body.addChild(hoverZone);
+		const toScene = (e) => ({ x: e.global.x, y: e.global.y });
+		for (const target of [this._root, this._slot]) {
+			if (!target) continue;
+			if (target.eventMode === 'auto' || target.eventMode === 'none' || !target.eventMode) {
+				target.eventMode = target === this._root ? 'dynamic' : 'static';
+			}
+			target.on('pointerover', (e) => tooltip.show(this, toScene(e)));
+			target.on('pointermove', (e) => tooltip.move(this, toScene(e)));
+			target.on('pointerout', () => tooltip.hide(this));
+		}
 	}
 
 	/**

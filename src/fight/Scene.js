@@ -22,6 +22,7 @@ import { SettingsButton } from './settings/SettingsButton.js';
 import { Settings } from './settings/Settings.js';
 import { SettingsPanel } from './settings/SettingsPanel.js';
 import { SpeedPanel } from './settings/SpeedPanel.js';
+import { FighterTooltip } from './parts/text/FighterTooltip.js';
 
 /**
  * The fight scene containing all the different layers to display.
@@ -109,6 +110,10 @@ export class Scene extends IScene {
 			this.dm.addContainer(settingsPanel, Layers.Scene.SETTINGS);
 		}
 
+		// FIGHTER TOOLTIP
+		this.fighterTooltip = new FighterTooltip((key) => this._settings.getLangText(key));
+		this.dm.addContainer(this.fighterTooltip, Layers.Scene.DEBUG);
+
 		// MARGINS
 		this.debugDrawMargins();
 	}
@@ -141,6 +146,7 @@ export class Scene extends IScene {
 		if (this._continueArrow.visible) {
 			this._continueArrow.update(timer);
 		}
+		this.fighterTooltip.update();
 		// Filter the deleted Fighters.
 		this._fighters = this._fighters.filter((f) => !f.isDeleted);
 	}

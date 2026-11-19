@@ -35,7 +35,8 @@ export const Action = {
 	Energy: 28,
 	MaxEnergy: 29,
 	Emote: 30,
-	Shake: 31
+	Shake: 31,
+	Stats: 32
 };
 
 /**

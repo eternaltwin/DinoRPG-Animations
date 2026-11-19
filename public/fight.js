@@ -597,6 +597,81 @@ const buttons = [
 			]
 		}
 	},
+	// TOOLTIP (spike)
+	{
+		name: 'Tooltip',
+		fight: {
+			bg: 'cavern2',
+			top: 120,
+			bottom: 20,
+			lang: 'fr',
+			history: [
+				{
+					...addDefaultFighter,
+					fighter: { ...addDefaultFighter.fighter, life: 120, maxLife: 150, x: 120, y: 200 }
+				},
+				{
+					action: 'Add',
+					fighter: {
+						props: [],
+						dino: false,
+						life: 80,
+						name: 'Goupignon',
+						side: false,
+						fid: 1,
+						gfx: 'goupi',
+						x: 320,
+						y: 210
+					}
+				},
+				{
+					action: 'MaxEnergy',
+					fighters: [
+						{ fid: 0, energy: 100 },
+						{ fid: 1, energy: 100 }
+					]
+				},
+				{
+					action: 'Stats',
+					fighters: [
+						{
+							fid: 0,
+							stats: {
+								Initiative: 12,
+								Vitesse: '100 %',
+								Assaut: '🔥 8  🌿 3  💧 0  ⚡ 5  🌪 2',
+								Armure: 4
+							}
+						},
+						{ fid: 1, stats: { Initiative: 20, Vitesse: '100 %' } }
+					]
+				},
+				{ action: 'Text', message: 'Survole un combattant ou son portrait pour voir son état.' },
+				{ action: 'Damages', fid: 0, tid: 1, damages: 15 },
+				{ action: 'Energy', fighters: [{ fid: 0, energy: 60 }] },
+				{
+					action: 'Stats',
+					fighters: [
+						{ fid: 0, stats: { Initiative: 31 } },
+						{ fid: 1, stats: { Initiative: 8 } }
+					]
+				},
+				{ action: 'Status', fid: 1, status: 'Poison' },
+				{ action: 'Status', fid: 1, status: 'Slow' },
+				{ action: 'Stats', fighters: [{ fid: 1, stats: { Vitesse: '75 %' } }] },
+				{ action: 'Pause', time: 60 },
+				{ action: 'Damages', fid: 1, tid: 0, damages: 22 },
+				{
+					action: 'Stats',
+					fighters: [
+						{ fid: 0, stats: { Initiative: 19 } },
+						{ fid: 1, stats: { Initiative: 28 } }
+					]
+				},
+				{ action: 'Text', message: 'Fin de la démo.' }
+			]
+		}
+	},
 	// CASTLE
 	{
 		name: 'Castle',
