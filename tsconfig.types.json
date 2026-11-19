@@ -1,0 +1,14 @@
+{
+	// Checks the published type declarations (src/index.d.ts) against the usage examples of test/types.
+	"include": ["test/types/**/*.ts"],
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"lib": ["ES2020", "DOM"],
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": false,
+		"types": []
+	}
+}

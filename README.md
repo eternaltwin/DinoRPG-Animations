@@ -17,6 +17,37 @@ The following pages allow to test the result for the different parts of the proj
 
 A comparison of the Dinoz' display with their Flash equivalent can be found [here](https://gerardufoin.github.io/DinoRPG-Animations/public/compare.html), but do note that you will need a plugin like [Ruffle](https://ruffle.rs/) to be able to run the Flash files.
 
+## TypeScript
+
+The package ships its type declarations (`src/index.d.ts`): the entities, the `Fight` class, the fight data and the enums.
+
+```typescript
+import { Action, EntranceEffect, Fight, FightAction, sdino } from '@eternaltwin/dinorpg_animations';
+
+const dinoz = new sdino({ data: '09T1Yt9wqq4Rx000', pflag: true });
+
+// The history is a union discriminated on `action`. Enums accept their value or their name.
+const history: FightAction[] = [
+	{
+		action: Action.Add,
+		fighter: {
+			fid: 0,
+			dino: true,
+			gfx: '09T1Yt9wqq4Rx000',
+			name: 'Dragon Jr',
+			side: true,
+			life: 100,
+			props: [],
+			entrance: EntranceEffect.Run
+		}
+	},
+	{ action: 'Talk', fid: 0, message: 'Hello!' }
+];
+const fight = new Fight({ bg: 's_dnv', history });
+```
+
+The declarations are written by hand and must be updated with the public API. `npm run types:check` checks them against `test/types/usage.ts`.
+
 ## Development
 
 To run the project locally, run `npm start`.
