@@ -76,7 +76,6 @@ export class FighterTooltip extends Container {
 	show(fighter, pointer) {
 		this._fighter = fighter;
 		this.move(fighter, pointer);
-		this.update();
 	}
 
 	/**
@@ -102,9 +101,14 @@ export class FighterTooltip extends Container {
 
 	/**
 	 * Refreshes the content from the current state of the Fighter. Called every frame.
+	 * @param {boolean} enabled If false, the tooltip stays hidden, for example while the loading screen is displayed. True by default.
 	 */
-	update() {
+	update(enabled = true) {
 		if (!this._fighter) return;
+		if (!enabled) {
+			this.visible = false;
+			return;
+		}
 		if (this._fighter.isDeleted) {
 			this.hide(this._fighter);
 			return;
