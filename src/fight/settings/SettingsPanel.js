@@ -167,6 +167,12 @@ export class SettingsPanel extends Container {
 		scaleDinozPanel.y = posY += 25;
 		this.addChild(scaleDinozPanel);
 
+		// Hide corpses option
+		const hideCorpsesPanel = this.createHideCorpsesSetting();
+		hideCorpsesPanel.x = xOffset;
+		hideCorpsesPanel.y = posY += 25;
+		this.addChild(hideCorpsesPanel);
+
 		// Debug panel
 		const debugPanel = this.createDebugPanel(xOffset);
 		debugPanel.x = xOffset;
@@ -499,6 +505,45 @@ export class SettingsPanel extends Container {
 			},
 			() => {
 				this._settings.scaleDinoz = false;
+			}
+		);
+		// Callback to prevent font loading issue. See comment above.
+		this.onOpen = () => {
+			toggle.x = 18 + Math.round(txt.width) + SettingsPanel.TITLE_PADDING;
+		};
+		toggle.y = 3;
+		cont.addChild(toggle);
+		return cont;
+	}
+
+	/**
+	 * Creates the settings allowing to toggle on or off the fading of the corpses in crowded fights.
+	 * @returns {Container} The display for the setting.
+	 */
+	createHideCorpsesSetting() {
+		const cont = new Container();
+		const arrow = new Asset(ref.settings.arrow);
+		arrow.y += SettingsPanel.ARROW_OFFSET;
+		cont.addChild(arrow);
+		const txt = new Text(this._settings.getLangText('hide_corpses'), {
+			fontFamily: 'drpg-verdana',
+			fontSize: 12 * SettingsPanel.S_FONT_SIZE,
+			fill: 0xffffff,
+			stroke: 0x000000,
+			strokeThickness: 2 * SettingsPanel.S_FONT_SIZE
+		});
+		txt.scale.set(1 / SettingsPanel.S_FONT_SIZE);
+		txt.x = 18;
+		cont.addChild(txt);
+		const toggle = new Toggle(
+			ref.settings.checkbox_on,
+			ref.settings.checkbox_off,
+			this._settings.hideCorpses,
+			() => {
+				this._settings.hideCorpses = true;
+			},
+			() => {
+				this._settings.hideCorpses = false;
 			}
 		);
 		// Callback to prevent font loading issue. See comment above.

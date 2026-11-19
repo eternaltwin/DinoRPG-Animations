@@ -1813,12 +1813,62 @@ export class Fighter extends Phys {
 	}
 
 	/**
+	 * Attack count of the scene when the Fighter died.
+	 * @type {number}
+	 */
+	_deathAttackCount = 0;
+	/**
+	 * True if the corpse of the Fighter has faded away.
+	 * @type {boolean}
+	 */
+	_corpseHidden = false;
+
+	/**
+	 * Checks if the corpse of this Fighter should fade away.
+	 * @param {number} attackCount Current attack count of the scene.
+	 * @param {number} turns Number of attacks after the death at which the corpse fades away.
+	 * @returns {boolean} True if the Fighter is a visible corpse dead for at least the given number of attacks.
+	 */
+	canHideCorpse(attackCount, turns) {
+		return this._mode === Fighter.Mode.Dead && !this._corpseHidden && attackCount - this._deathAttackCount >= turns;
+	}
+
+	/**
+	 * Fades the corpse away, then hides it. The Fighter stays in the scene.
+	 */
+	hideCorpse() {
+		this._corpseHidden = true;
+		const root = this.getRootContainer();
+		if (this._scene.fastForward) {
+			root.visible = false;
+			return;
+		}
+		this._scene.tm.addTween(
+			new Tween(root, TFx.TBurnOut).to(1, { alpha: 0 }).onComplete(() => {
+				if (this._corpseHidden) root.visible = false;
+			})
+		);
+	}
+
+	/**
+	 * Shows the Fighter back after its corpse faded away.
+	 */
+	showCorpse() {
+		if (!this._corpseHidden) return;
+		this._corpseHidden = false;
+		const root = this.getRootContainer();
+		root.alpha = 1;
+		root.visible = true;
+	}
+
+	/**
 	 * The Figther resurrect from the dead. Like Jesus, but without waiting 3 days.
 	 * @returns {void}
 	 */
 	resurrect() {
 		if (this._mode !== Fighter.Mode.Dead) return;
 		this._mode = Fighter.Mode.Waiting;
+		this.showCorpse();
 		this.backToDefault();
 	}
 
@@ -1892,6 +1942,7 @@ export class Fighter extends Phys {
 		this.removeStatus();
 		this.playAnim('dead');
 		this._mode = Fighter.Mode.Dead;
+		this._deathAttackCount = this._scene.attackCount;
 		this.removeShadow();
 		this._force = null;
 		this._scene.settings.onDeath(this.id);

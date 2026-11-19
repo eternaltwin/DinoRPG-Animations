@@ -169,6 +169,27 @@ export class Settings {
 	}
 
 	/**
+	 * Decides if the corpses should fade away 10 attacks after their death when more than 15 fighters are in the scene.
+	 * @type {boolean}
+	 */
+	_hideCorpses = false;
+	/**
+	 * Gets the setting deciding if the corpses should fade away when the scene is crowded.
+	 * @type {boolean}
+	 */
+	get hideCorpses() {
+		return this._hideCorpses;
+	}
+	/**
+	 * Sets the setting deciding if the corpses should fade away when the scene is crowded.
+	 * @type {boolean}
+	 */
+	set hideCorpses(v) {
+		this._hideCorpses = v;
+		this.saveSettings();
+	}
+
+	/**
 	 * Decides if the hitboxes should be displayed or not.
 	 * @type {boolean}
 	 */
@@ -248,6 +269,7 @@ export class Settings {
 		this._autoSkip = settings.autoSkip ?? -1;
 		this._scaleDinoz = settings.scaleDinoz ?? true;
 		this._autoPause = settings.autoPause ?? false;
+		this._hideCorpses = settings.hideCorpses ?? false;
 		this._showHitbox = settings.showHitbox ?? false;
 	}
 
@@ -264,6 +286,7 @@ export class Settings {
 			autoSkip: this._autoSkip,
 			scaleDinoz: this._scaleDinoz,
 			autoPause: this._autoPause,
+			hideCorpses: this._hideCorpses,
 			showHitbox: this._showHitbox
 		};
 		localStorage.setItem(Settings.SETTING_KEY_NAME, JSON.stringify(settings));

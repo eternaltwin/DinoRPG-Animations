@@ -31,10 +31,26 @@ import { FighterTooltip } from './parts/text/FighterTooltip.js';
  */
 export class Scene extends IScene {
 	/**
+	 * Corpses only fade away when there are strictly more fighters than this in the scene.
+	 * @type {number}
+	 */
+	static CORPSE_FIGHTER_THRESHOLD = 15;
+	/**
+	 * Number of attacks after its death at which a corpse fades away.
+	 * @type {number}
+	 */
+	static CORPSE_TURNS = 10;
+
+	/**
 	 * Contains all the fighters currently instantiated and contained in the fighters layer.
 	 * @type {Fighter[]}
 	 */
 	_fighters = [];
+	/**
+	 * Number of attack actions (skills and items) played so far. Used to know when a corpse should fade away.
+	 * @type {number}
+	 */
+	_attackCount = 0;
 	/**
 	 * The Castle if any is instantiated.
 	 * @type {Castle}
@@ -148,8 +164,37 @@ export class Scene extends IScene {
 		}
 		// No tooltip while the loading screen hides the scene.
 		this.fighterTooltip.update(!this._loadingScreen.visible);
+		this.updateCorpses();
 		// Filter the deleted Fighters.
 		this._fighters = this._fighters.filter((f) => !f.isDeleted);
+	}
+
+	/**
+	 * Number of attack actions played so far.
+	 * @type {number}
+	 */
+	get attackCount() {
+		return this._attackCount;
+	}
+
+	/**
+	 * Registers a new attack action, which counts as a turn for the corpses.
+	 */
+	countAttack() {
+		this._attackCount++;
+	}
+
+	/**
+	 * Fades away the corpses which are dead for long enough, if the setting is enabled and the scene is crowded.
+	 * The corpses are only hidden, so they can still be targeted or resurrected by the following actions.
+	 */
+	updateCorpses() {
+		if (!this.settings.hideCorpses || this._fighters.length <= Scene.CORPSE_FIGHTER_THRESHOLD) return;
+		for (const f of this._fighters) {
+			if (f.canHideCorpse(this._attackCount, Scene.CORPSE_TURNS)) {
+				f.hideCorpse();
+			}
+		}
 	}
 
 	/**

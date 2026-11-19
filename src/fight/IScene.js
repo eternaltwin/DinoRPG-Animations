@@ -31,6 +31,13 @@ export class IScene extends Container {
 	 */
 	_settings;
 	/**
+	 * Number of attack actions (skills and items) played so far. Always 0 for scenes without a fight.
+	 * @type {number}
+	 */
+	get attackCount() {
+		return 0;
+	}
+	/**
 	 * Get the Fight's settings.
 	 * @type {Settings}
 	 */

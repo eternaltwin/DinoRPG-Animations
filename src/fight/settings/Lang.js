@@ -13,6 +13,7 @@ export const lang = {
 		auto_skip_disabled: 'Désactivé',
 		scale_size: 'Agrandir les dinoz selon leur vie (recharge nécessaire)',
 		auto_pause: 'Bloquer le combat entre chaque action',
+		hide_corpses: 'Faire disparaître les cadavres (+ de 15 combattants)',
 		show_hitbox: 'Afficher les collisions',
 		copy_fight: 'Copier le combat dans le presse-papier',
 		copy_fight_done: 'Copié !',
@@ -44,6 +45,7 @@ export const lang = {
 		auto_skip_disabled: 'Disabled',
 		scale_size: 'Scale dinoz with HP (needs reload)',
 		auto_pause: 'Pause the fight between each action',
+		hide_corpses: 'Fade out corpses (more than 15 fighters)',
 		show_hitbox: 'Display the hitboxes',
 		copy_fight: 'Copy the fight into your clipboard',
 		copy_fight_done: 'Copied!',
@@ -75,6 +77,7 @@ export const lang = {
 		auto_skip_disabled: 'Deaktiviert',
 		scale_size: 'Skaliere die Dinoz anhand ihrer LP (benötigt Neuladen)',
 		auto_pause: 'Pausiere den Kampf nach jeder Aktion',
+		hide_corpses: 'Leichen ausblenden (mehr als 15 Kämpfer)',
 		show_hitbox: 'Zeige die Hitboxen',
 		copy_fight: 'Kopiere diesen Kampf in deine Zwischenablage',
 		copy_fight_done: 'Kopiert!'

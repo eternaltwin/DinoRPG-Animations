@@ -164,6 +164,9 @@ export class History {
 		this._historyIdx++;
 		if (this._history && this._historyIdx < this._history.length) {
 			const h = this._history[this._historyIdx];
+			if (h.action === Action.Skill || h.action === Action.Object) {
+				this._scene.countAttack();
+			}
 			// Step start callback
 			this._scene.settings.onStepStart(this._historyIdx, h);
 			this._scene.settings.onStepStartStr(this._historyIdx, EnumConverter.convertAction(h, true));
