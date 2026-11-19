@@ -146,7 +146,8 @@ export class Scene extends IScene {
 		if (this._continueArrow.visible) {
 			this._continueArrow.update(timer);
 		}
-		this.fighterTooltip.update();
+		// No tooltip while the loading screen hides the scene.
+		this.fighterTooltip.update(!this._loadingScreen.visible);
 		// Filter the deleted Fighters.
 		this._fighters = this._fighters.filter((f) => !f.isDeleted);
 	}
