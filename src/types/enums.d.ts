@@ -44,6 +44,7 @@ export declare const Action: {
 	readonly MaxEnergy: 29;
 	readonly Emote: 30;
 	readonly Shake: 31;
+	readonly Stats: 32;
 };
 export type Action = (typeof Action)[keyof typeof Action];
 

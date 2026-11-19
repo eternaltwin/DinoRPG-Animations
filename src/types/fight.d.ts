@@ -326,6 +326,41 @@ export interface ShakeAction extends ActionOf<'Shake'> {
 }
 
 /**
+ * Custom stats of a fighter, used by the `Stats` action.
+ */
+export interface FighterStats {
+	fid: number;
+	/**
+	 * Stats to display in the tooltip of the fighter, keyed by their label (already translated).
+	 * They are merged with the previous ones; `null` removes a stat.
+	 */
+	stats: Record<string, string | number | null>;
+}
+/** Sets the custom stats displayed in the tooltip of a group of fighters (initiative, speed, etc). Not compatible with Motion-Twin's fight.swf. */
+export interface StatsAction extends ActionOf<'Stats'> {
+	fighters: FighterStats[];
+}
+
+/**
+ * State of a fighter at the current instant of the fight, as displayed in its tooltip.
+ */
+export interface FighterState {
+	fid: number;
+	name: string;
+	/** True for the left side. */
+	side: boolean;
+	alive: boolean;
+	life: number;
+	maxLife: number;
+	energy: number;
+	maxEnergy: number;
+	/** Current statuses, as numeric values of the `FighterStatus` enum. */
+	status: FighterStatus[];
+	/** Custom stats set by the `Stats` action, keyed by their label, in insertion order. */
+	stats: Record<string, string | number>;
+}
+
+/**
  * A step of the fight history. Discriminated by its `action` property.
  */
 export type FightAction =
@@ -360,7 +395,8 @@ export type FightAction =
 	| EnergyAction
 	| MaxEnergyAction
 	| EmoteAction
-	| ShakeAction;
+	| ShakeAction
+	| StatsAction;
 
 /**
  * Options shared by both ways of creating a fight.
@@ -444,6 +480,12 @@ export declare class Fight {
 	 * @returns Resolves once the step is reached.
 	 */
 	seek(step: number): Promise<void>;
+	/**
+	 * Gets the state of a fighter at the current instant of the fight: life, energy, statuses and custom stats.
+	 * @param fid The id of the fighter.
+	 * @returns The state of the fighter, or undefined if it is not in the scene.
+	 */
+	getFighterState(fid: number): FighterState | undefined;
 	/**
 	 * Copies the fight data to the clipboard.
 	 */
