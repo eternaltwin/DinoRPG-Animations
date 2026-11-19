@@ -29,7 +29,15 @@ export class FighterTooltip extends Container {
 	 * @type {string}
 	 */
 	_content = '';
+	/**
+	 * Background of the tooltip, resized to its content.
+	 * @type {Graphics}
+	 */
 	_background = new Graphics();
+	/**
+	 * Text of the tooltip.
+	 * @type {Text}
+	 */
 	_text;
 	/**
 	 * Function returning the translation of a key.
@@ -38,6 +46,7 @@ export class FighterTooltip extends Container {
 	_lang;
 
 	/**
+	 * Creates the tooltip, hidden until a fighter is hovered.
 	 * @param {(key: string) => string} lang Function returning the translation of a key.
 	 */
 	constructor(lang) {

@@ -71,6 +71,9 @@ const history: FightAction[] = [
 	{ action: Action.Status, fid: 1, status: 'Poison' },
 	{ action: Action.Lost, fid: 1, amount: 3, lifeFx: { fx: 'Poison' } },
 	{ action: Action.Finish, left: 'Run', right: 'Escape' },
+	{ action: Action.Stats, fighters: [{ fid: 0, stats: { Initiative: 12, Vitesse: '100 %', Armure: null } }] },
+	// @ts-expect-error Stat values are strings or numbers.
+	{ action: 'Stats', fighters: [{ fid: 0, stats: { Initiative: true } }] },
 	// @ts-expect-error A Damages action needs a target.
 	{ action: Action.Damages, fid: 0, damages: 3 },
 	// @ts-expect-error Unknown enum name.
@@ -91,6 +94,10 @@ fight.onStepStart = (idx, step) => {
 	}
 };
 fight.onStatusChange = (fid, statuses) => statuses satisfies (keyof typeof FighterStatus)[];
+const state = fight.getFighterState(0);
+state?.stats.Initiative satisfies string | number | undefined;
+state?.status satisfies FighterStatus[] | undefined;
+state?.life satisfies number | undefined;
 fight.seek(fight.stepCount - 1).then(() => fight.currentStep satisfies number);
 
 export { collider, animators, dinos, status, ground };

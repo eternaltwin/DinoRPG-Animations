@@ -83,6 +83,20 @@ While seeking, `onStepStart`, `onStepEnd` (and their `Str` variants) and `onFigh
 
 The result is not pixel-perfect compared to a normal playback (random positions and particles), but the state of the fight (life, status, deaths, castle, time bar) is the same.
 
+## Tooltip
+
+Hovering a fighter or its portrait displays a tooltip with its current state: name, life, energy, the custom stats set by the [Stats](#stats-32) action, and its statuses.
+The tooltip always reflects the current instant of the fight, including after a `seek`, and stays inside the canvas.
+
+The same state can be read with `getFighterState`:
+
+```javascript
+fight.getFighterState(0);
+// { fid: 0, name: 'Dragon Jr', side: true, alive: true, life: 84, maxLife: 120, energy: 60, maxEnergy: 100, status: [9], stats: { Initiative: 12 } }
+```
+
+It returns `undefined` if the fighter is not in the scene.
+
 ## Callbacks
 
 The Fight object has multiple endpoints which can be used to gather information about the ongoing fight.
@@ -784,3 +798,25 @@ The scene starts shaking temporarily.
 | force?   | number | The strength of the shaking. Default to 8.                                                                                                          |
 | frict?   | number | The friction between 0 and 1. Slows the shaking over time. Lower values reduce the shaking faster. Defaults to 0.75. 1 makes the shaking permanent. |
 | speed?   | number | The speed of the shaking. Defaults to 1.                                                                                                            |
+
+### Stats (32)
+
+Sets custom stats on a group of fighters. They are displayed in the fighter's tooltip (see [Tooltip](#tooltip)), below its life and energy.
+The stats are merged with the ones previously set. Set a stat to `null` to remove it.
+The labels are displayed as is, in the order they were first set: send them already translated.
+
+#### Properties
+
+| Property | Type                                                                    | Description                                |
+| -------- | ----------------------------------------------------------------------- | ------------------------------------------ |
+| fighters | { fid: Number, stats: { [label: String]: String \| Number \| Null } }[] | An array of fighters and the stats to set. |
+
+```javascript
+{
+	action: 'Stats',
+	fighters: [
+		{ fid: 0, stats: { Initiative: 12, Vitesse: '100 %' } },
+		{ fid: 1, stats: { Initiative: 20, Armure: null } }
+	]
+}
+```
