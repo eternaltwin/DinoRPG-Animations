@@ -15,7 +15,25 @@ export const lang = {
 		auto_pause: 'Bloquer le combat entre chaque action',
 		show_hitbox: 'Afficher les collisions',
 		copy_fight: 'Copier le combat dans le presse-papier',
-		copy_fight_done: 'Copié !'
+		copy_fight_done: 'Copié !',
+		tooltip_life: 'Vie',
+		tooltip_energy: 'Énergie',
+		tooltip_status: 'Statuts',
+		status_Sleep: 'Endormi',
+		status_Flames: 'Torche',
+		status_Intang: 'Intangible',
+		status_Fly: 'En vol',
+		status_Slow: 'Ralenti',
+		status_Quick: 'Accéléré',
+		status_Stoned: 'Pétrifié',
+		status_Shield: 'Bouclier',
+		status_Bless: 'Béni',
+		status_Poison: 'Empoisonné',
+		status_Heal: 'Régénération',
+		status_Burn: 'Brûlé',
+		status_MonoElt: 'Verrouillé',
+		status_Dazzled: 'Ébloui',
+		status_Stun: 'Étourdi'
 	},
 	en: {
 		title: 'OPTIONS',
@@ -28,7 +46,25 @@ export const lang = {
 		auto_pause: 'Pause the fight between each action',
 		show_hitbox: 'Display the hitboxes',
 		copy_fight: 'Copy the fight into your clipboard',
-		copy_fight_done: 'Copied!'
+		copy_fight_done: 'Copied!',
+		tooltip_life: 'Life',
+		tooltip_energy: 'Energy',
+		tooltip_status: 'Status',
+		status_Sleep: 'Asleep',
+		status_Flames: 'Torched',
+		status_Intang: 'Intangible',
+		status_Fly: 'Flying',
+		status_Slow: 'Slowed',
+		status_Quick: 'Quickened',
+		status_Stoned: 'Petrified',
+		status_Shield: 'Shielded',
+		status_Bless: 'Blessed',
+		status_Poison: 'Poisoned',
+		status_Heal: 'Healing',
+		status_Burn: 'Burned',
+		status_MonoElt: 'Locked',
+		status_Dazzled: 'Dazzled',
+		status_Stun: 'Stunned'
 	},
 	de: {
 		title: 'OPTIONEN',
@@ -41,6 +77,7 @@ export const lang = {
 		auto_pause: 'Pausiere den Kampf nach jeder Aktion',
 		show_hitbox: 'Zeige die Hitboxen',
 		copy_fight: 'Kopiere diesen Kampf in deine Zwischenablage',
-		copy_fight_done: 'Kopiert!'},
+		copy_fight_done: 'Kopiert!'
+	},
 	es: {}
 };

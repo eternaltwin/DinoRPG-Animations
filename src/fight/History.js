@@ -139,7 +139,8 @@ export class History {
 			[Action.Energy]: 'energy',
 			[Action.MaxEnergy]: 'maxEnergy',
 			[Action.Emote]: 'emote',
-			[Action.Shake]: 'shake'
+			[Action.Shake]: 'shake',
+			[Action.Stats]: 'stats'
 		};
 		if (!this._history.find((v) => v.action === Action.Display)) {
 			this._history.unshift({ action: Action.Display });
@@ -754,6 +755,22 @@ export class History {
 	 */
 	shake(action) {
 		this._scene.fxShake(action.force, action.frict, action.speed);
+		this.nextAction();
+	}
+
+	/**
+	 * Set the custom stats displayed in the tooltip of the given fighters.
+	 * @param {{action: number, fighters: { fid: number, stats: {[label: string]: string | number | null} }[]}} action Action which triggered the call.
+	 */
+	stats(action) {
+		for (const f of action.fighters) {
+			const fighter = this._scene.getFighter(f.fid);
+			if (fighter) {
+				fighter.setStats(f.stats);
+			} else {
+				console.error(`Stats Error: Fighter with id ${f.fid} does not exist in the scene.`);
+			}
+		}
 		this.nextAction();
 	}
 }

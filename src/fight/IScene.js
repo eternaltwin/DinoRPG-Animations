@@ -38,6 +38,11 @@ export class IScene extends Container {
 		return this._settings;
 	}
 	/**
+	 * Tooltip displaying the state of the hovered fighter. Undefined for scenes without fighters.
+	 * @type {import('./parts/text/FighterTooltip.js').FighterTooltip | undefined}
+	 */
+	fighterTooltip;
+	/**
 	 * The panel controlling the speed settings.
 	 * @type {Container}
 	 */

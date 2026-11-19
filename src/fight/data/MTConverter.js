@@ -1,6 +1,7 @@
 // @ts-check
 
 import {
+	Action,
 	DamagesEffect,
 	EndBehaviour,
 	EntranceEffect,
@@ -104,6 +105,8 @@ export class MTConverter {
 	static convertHistory(etData) {
 		const history = [];
 		for (const h of etData.history) {
+			// Stats only feeds the fighter tooltip, it has no equivalent in fight.swf.
+			if (h.action === Action.Stats) continue;
 			if (MTConverter.ActionToHistory[h.action]) {
 				const cmd = MTConverter.ActionToHistory[h.action](h);
 				if (cmd) {

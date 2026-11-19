@@ -432,6 +432,15 @@ export class Fight {
 	}
 
 	/**
+	 * Get the current state of a fighter: life, energy, status and the custom stats set by the Stats action.
+	 * @param {number} fid The id of the fighter.
+	 * @returns {object | undefined} The state of the fighter, or undefined if it is not in the scene.
+	 */
+	getFighterState(fid) {
+		return this._scene?.getFighter(fid)?.getState();
+	}
+
+	/**
 	 * Registers a callback firing every time a new step is started in the fight history.
 	 * Will give the step index and object as argument. The object enums are sent as numbers.
 	 * @param {((idx: number, step: object) => {})} cb The callback to invoke on a new step.
