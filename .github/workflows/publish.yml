@@ -30,6 +30,11 @@ jobs:
             exit 1
           fi
 
+      - run: npm ci
+
+      - name: Check type declarations
+        run: npm run types:check
+
       - name: Publish
         run: npm publish --access public
 

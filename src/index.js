@@ -6,16 +6,18 @@ import { sdino } from './sdino.js';
 import { smonster } from './smonster.js';
 import { Fight } from './fight/Fight.js';
 
-export { 
-  Application, 
-  Graphics, 
-  Container, 
-  Texture, 
-  Matrix, 
-  Renderer, 
-  autoDetectRenderer, 
-  sdino, 
-  smonster, 
-  Fight, 
-  dino 
+export {
+	Application,
+	Graphics,
+	Container,
+	Texture,
+	Matrix,
+	Renderer,
+	autoDetectRenderer,
+	sdino,
+	smonster,
+	Fight,
+	dino
 };
+
+export * from './fight/Enums.js';

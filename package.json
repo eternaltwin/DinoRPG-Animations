@@ -5,8 +5,8 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"import": "./src/index.js",
-			"types": "./src/sdino.d.ts"
+			"types": "./src/index.d.ts",
+			"import": "./src/index.js"
 		},
 		"./package.json": "./package.json",
 		"./public/*": "./public/*",
@@ -16,10 +16,12 @@
 		"build": "webpack",
 		"start": "webpack serve",
 		"types": "tsc",
-		"pack": "node ./assets/packer.cjs"
+		"pack": "node ./assets/packer.cjs",
+		"types:check": "tsc -p tsconfig.types.json"
 	},
 	"author": "Gerardufoin",
 	"main": "src/index.js",
+	"types": "./src/index.d.ts",
 	"files": [
 		"src",
 		"public",
